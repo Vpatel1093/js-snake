@@ -1,4 +1,9 @@
-function drawGrid() {
+// In game variables
+var snake = [];
+var score = 0;
+var fruitCell = [];
+
+function initGrid() {
   const rows = 40;
   const columns = 40;
 
@@ -9,17 +14,36 @@ function drawGrid() {
   };
 };
 
+function initSnake() {
+  snake = [[20,20], [20,19], [20,18]];
+  for (var i = 0; i < snake.length; i++) {
+    $('#row' + snake[i][0] + '-col' + snake[i][1]).addClass('snake');
+  };
+};
+
+function resetGame() {
+  for (var i = 0; i < snake.length; i++) {
+    $('#row' + snake[i][0] + '-col' + snake[i][1]).removeClass('snake').addClass('empty');
+  };
+  snake = [];
+  initSnake();
+  fruitCell.removeClass('apple').addClass('empty');
+  fruitCell = [];
+  placeFruit();
+  score = 0;
+}
+
 function placeFruit() {
-  var fruitCell;
   do {
-    var fruitRow = Math.floor(Math.random()*40) +1;
-    var fruitColumn = Math.floor(Math.random()*40) +1;
+    var fruitRow = Math.floor(Math.random()*40);
+    var fruitColumn = Math.floor(Math.random()*40);
     fruitCell = $('#row' + fruitRow + '-col' + fruitColumn);
   } while(fruitCell.hasClass('snake'));
   fruitCell.addClass('apple');
 };
 
 $(document).ready(function snake() {
-  drawGrid();
+  initGrid();
+  initSnake();
   placeFruit();
 });
