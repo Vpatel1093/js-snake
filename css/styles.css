@@ -2,24 +2,31 @@ body {
   background: #e3e3e3;
 }
 
-html {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+h1 {
+  text-align: center;
 }
 
-*,
-*::before,
-*::after {
-    -webkit-box-sizing: inherit;
-       -moz-box-sizing: inherit;
-            box-sizing: inherit;
-}
-
-#wrapper {
-  width: ;
-  height: ;
+#grid {
   background-color: grey;
   margin: 0 auto;
-  border: 2px solid #000;
+  max-width: 404px;
+  max-height: 404px;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  float: left;
+}
+
+.empty {
+  background-color: #282828;
+}
+
+.snake {
+
+}
+
+.apple {
+
 }
