@@ -2,6 +2,11 @@
 var snake = [];
 var score = 0;
 var fruitCell = [];
+var gameInProgress = false;
+const left = 37;
+const up = 38;
+const right = 39;
+const down = 40;
 
 function initGrid() {
   const rows = 40;
@@ -31,6 +36,7 @@ function resetGame() {
   fruitCell = [];
   placeFruit();
   score = 0;
+  gameInProgress = false;
 }
 
 function placeFruit() {
@@ -42,8 +48,25 @@ function placeFruit() {
   fruitCell.addClass('apple');
 };
 
-$(document).ready(function snake() {
+function playGame(direction) {
+  console.log(direction);
+};
+
+
+$(document).ready(function initGame() {
   initGrid();
   initSnake();
   placeFruit();
+
+  $(document).keydown(function startGame(key) {
+    direction = key.which
+    if (!gameInProgress) {
+      console.log('a' + direction)
+      if (direction === left || direction === up || direction === right || direction === down) {
+        gameInProgress = true;
+        playGame(direction);
+        console.log('b' +direction);
+      };
+    };
+  });
 });
