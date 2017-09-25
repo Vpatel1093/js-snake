@@ -24,7 +24,7 @@ function initGrid() {
 function initSnake() {
   snake = [[20,20], [20,19], [20,18]];
   for (var i = 0; i < snake.length; i++) {
-    $('#row' + snake[i][0] + '-col' + snake[i][1]).addClass('snake');
+    $('#row' + snake[i][0] + '-col' + snake[i][1]).removeClass('empty').addClass('snake');
   };
 };
 
@@ -35,6 +35,7 @@ function resetGame() {
   };
   snake = [];
   initSnake();
+  console.log(snake[0]+snake[1]+snake[2]+snake[3]);
   fruitCell.removeClass('apple').addClass('empty');
   fruitCell = [];
   placeFruit();
@@ -54,7 +55,7 @@ function placeFruit() {
 
 function playGame() {
   if (gameInProgress) {
-    setInterval(moveSnake,100);
+    setTimeout(moveSnake,100);
   };
 };
 
@@ -93,12 +94,14 @@ function moveSnake() {
     if (nextCell.hasClass('snake')) {
       alert('Game over! You hit your own snake!');
       resetGame();
+      return;
     };
 
     // Next cell is wall
     if (nextCellCoords[0] < 0 || nextCellCoords[0] > 39 || nextCellCoords[1] < 0 || nextCellCoords[1] > 39) {
       alert('Game over! You hit a wall!');
       resetGame();
+      return;
     };
 
     // Next cell is empty
@@ -119,6 +122,7 @@ function moveSnake() {
 
   move(currentDirection);
   lastDirection = currentDirection;
+  playGame();
 };
 
 $(document).ready(function initGame() {
