@@ -2,8 +2,9 @@ body {
   background: #e3e3e3;
 }
 
-h1 {
+h1, h3 {
   text-align: center;
+  margin: 4px;
 }
 
 #grid {

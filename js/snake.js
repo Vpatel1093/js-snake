@@ -1,6 +1,7 @@
 // In game variables
 var snake = [];
 var score = 0;
+var multiplier = 1;
 var fruitCell = [];
 var gameInProgress = false;
 var currentDirection = '';
@@ -40,6 +41,7 @@ function resetGame() {
   fruitCell = [];
   placeFruit();
   score = 0;
+  multiplier = 1;
   currentDirection = '';
   lastDirection = '';
 }
@@ -55,7 +57,8 @@ function placeFruit() {
 
 function playGame() {
   if (gameInProgress) {
-    setTimeout(moveSnake,100);
+    setTimeout(moveSnake,100/(multiplier*.5));
+    $('h3').text("Score: " + score);
   };
 };
 
@@ -116,7 +119,9 @@ function moveSnake() {
     if (nextCell.hasClass('apple')) {
       snake.unshift(nextCellCoords);
       nextCell.removeClass('apple').addClass('snake');
+      multiplier += .05
       placeFruit();
+      score = Math.floor(score += 10*multiplier);
     };
   };
 
