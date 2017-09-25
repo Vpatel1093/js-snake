@@ -4,6 +4,7 @@ var score = 0;
 var fruitCell = [];
 var gameInProgress = false;
 var currentDirection = '';
+var lastDirection = '';
 const left = 37;
 const up = 38;
 const right = 39;
@@ -28,6 +29,7 @@ function initSnake() {
 };
 
 function resetGame() {
+  gameInProgress = false;
   for (var i = 0; i < snake.length; i++) {
     $('#row' + snake[i][0] + '-col' + snake[i][1]).removeClass('snake').addClass('empty');
   };
@@ -37,8 +39,8 @@ function resetGame() {
   fruitCell = [];
   placeFruit();
   score = 0;
-  gameInProgress = false;
   currentDirection = '';
+  lastDirection = '';
 }
 
 function placeFruit() {
@@ -47,7 +49,7 @@ function placeFruit() {
     var fruitColumn = Math.floor(Math.random()*40);
     fruitCell = $('#row' + fruitRow + '-col' + fruitColumn);
   } while(fruitCell.hasClass('snake'));
-  fruitCell.addClass('apple');
+  fruitCell.addClass('apple').removeClass('empty');
 };
 
 function playGame() {
@@ -58,7 +60,12 @@ function playGame() {
 
 function moveSnake() {
   $(document).keydown(function(newDirection) {
-    currentDirection = newDirection.which;
+    if (37 <= newDirection.which && newDirection.which <= 40) {
+      // Don't allow snake to make 180 direction change
+      if (Math.abs(newDirection.which - lastDirection) !== 2) {
+        currentDirection = newDirection.which;
+      };
+    };
   });
 
   var move = function(currentDirection) {
@@ -82,21 +89,36 @@ function moveSnake() {
         break;
     };
 
+    // Next cell is snake
+    if (nextCell.hasClass('snake')) {
+      alert('Game over! You hit your own snake!');
+      resetGame();
+    };
 
-    // Update snake when next cell empty
+    // Next cell is wall
+    if (nextCellCoords[0] < 0 || nextCellCoords[0] > 39 || nextCellCoords[1] < 0 || nextCellCoords[1] > 39) {
+      alert('Game over! You hit a wall!');
+      resetGame();
+    };
+
+    // Next cell is empty
     if (nextCell.hasClass('empty')) {
       snake.unshift(nextCellCoords);
       nextCell.removeClass('empty').addClass('snake');
       var snakeTail = snake.pop();
       $('#row' + snakeTail[0] + '-col' + snakeTail[1]).removeClass('snake').addClass('empty');
     };
+
+    // Next cell is apple
+    if (nextCell.hasClass('apple')) {
+      snake.unshift(nextCellCoords);
+      nextCell.removeClass('apple').addClass('snake');
+      placeFruit();
+    };
   };
 
-  if (37 <= currentDirection && currentDirection <= 40) {
-    move(currentDirection);
-  };
-
-  gameInProgress = false;
+  move(currentDirection);
+  lastDirection = currentDirection;
 };
 
 $(document).ready(function initGame() {
