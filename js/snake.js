@@ -53,9 +53,9 @@ function placeFruit() {
 };
 
 function playGame() {
-  do {
-    setTimeout(moveSnake(), 100);
-  } while(gameInProgress);
+  if (gameInProgress) {
+    setInterval(moveSnake,100);
+  };
 };
 
 function moveSnake() {
